@@ -1,0 +1,41 @@
+{
+  "info": {
+    "_postman_id": "94f3386e-cecb-4abd-8b94-5b274341bbf1",
+    "name": "ChatProject",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50554252",
+    "_collection_link": "https://go.postman.co/collection/50554252-94f3386e-cecb-4abd-8b94-5b274341bbf1?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "chatgptsend",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"conversation_id\": \"test-6\",\n  \"message\": \"איך קוראים לי\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/chat/send",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "chat",
+            "send"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
