@@ -1,11 +1,11 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, func
 from pydantic import BaseModel as BaseSchema, Field
 from src.utils.dal import BaseModel
-
+from uuid import UUID
 
 class ChatRequestSchema(BaseSchema):
-    conversation_id: str
-    message: str = Field( min_length=1, max_length=5000)
+    conversation_id: UUID
+    message: str = Field(min_length=1, max_length=5000)
 
 
 class ChatResponseSchema(BaseSchema):
