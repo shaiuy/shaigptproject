@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import "./Menu.css";
 
+// Top navigation bar
 export function Menu() {
     return (
         <nav className="nav-bar">

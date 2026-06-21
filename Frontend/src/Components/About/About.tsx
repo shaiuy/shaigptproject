@@ -1,9 +1,11 @@
 import "./About.css";
 
+// About page with project info
 export function About() {
     return (
         <div className="about-page">
 
+            {/* Hero section */}
             <header className="about-hero">
                 <h1>About ShaiGPT</h1>
                 <p className="about-hero-lead">
@@ -14,6 +16,7 @@ export function About() {
 
             <div className="about-grid">
 
+                {/* Project description */}
                 <section className="about-card about-card--wide">
                     <h2>Project Overview</h2>
                     <p>
@@ -22,6 +25,7 @@ export function About() {
                     </p>
                 </section>
 
+                {/* Tech stack */}
                 <section className="about-card">
                     <h2>Technologies Used</h2>
                     <ul className="tech-list">
@@ -34,6 +38,7 @@ export function About() {
                     </ul>
                 </section>
 
+                {/* Developer info */}
                 <section className="about-card about-card--developer">
                     <h2>Developer</h2>
 

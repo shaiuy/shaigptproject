@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "./Page404.css";
 
+// Page shown for unknown routes
 export function Page404() {
     return (
         <div className="page-404">

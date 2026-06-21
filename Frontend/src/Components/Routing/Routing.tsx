@@ -4,11 +4,13 @@ import { About } from "../About/About";
 import { Page404 } from "../Page404/Page404";
 import type { JSX } from "react/jsx-runtime";
 
+// App route definitions
 export function Routing(): JSX.Element {
 
     return (
         <Routes>
 
+            {/* Redirect home to chat */}
             <Route
                 path="/"
                 element={<Navigate to="/chat" />}
@@ -24,6 +26,7 @@ export function Routing(): JSX.Element {
                 element={<About />}
             />
 
+            {/* Catch-all for invalid URLs */}
             <Route
                 path="*"
                 element={<Page404 />}

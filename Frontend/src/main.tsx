@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Layout } from "./Components/Layout/Layout";
 import "./index.css";
 
+// App entry point
 ReactDOM.createRoot(
     document.getElementById("root")!
 ).render(

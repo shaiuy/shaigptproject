@@ -5,50 +5,31 @@ import { MessageModel } from "../../Models/MessageModel";
 import { chatService } from "../../Services/ChatService";
 import "./Chat.css";
 
+// Main chat page component
 export function Chat() {
 
+    // Form handling for the message input
     const { register, handleSubmit, reset, setFocus } = useForm<ChatRequestModel>();
 
+    // Chat state
     const [messages, setMessages] = useState<MessageModel[]>([]);
-
     const [conversationId, setConversationId] =
         useState(crypto.randomUUID());
-
     const [isLoading, setIsLoading] = useState(false);
     const [emptyMessageAlert, setEmptyMessageAlert] = useState(false);
 
+    // Ref for auto-scrolling to the latest message
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    const messageInputRef = useRef<HTMLTextAreaElement>(null);
-
     const { ref: messageRegisterRef, ...messageRegister } = register("message");
 
-    const MAX_INPUT_HEIGHT = 120;
-
-    function adjustTextareaHeight() {
-        const textarea = messageInputRef.current;
-        if (!textarea) return;
-
-        textarea.style.height = "auto";
-        const nextHeight = Math.min(textarea.scrollHeight, MAX_INPUT_HEIGHT);
-        textarea.style.height = `${nextHeight}px`;
-        textarea.style.overflowY =
-            textarea.scrollHeight > MAX_INPUT_HEIGHT ? "auto" : "hidden";
-    }
-
-    function resetTextareaHeight() {
-        const textarea = messageInputRef.current;
-        if (!textarea) return;
-
-        textarea.style.height = "auto";
-        textarea.style.overflowY = "hidden";
-    }
-
+    // Scroll down when messages or loading state change
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({
             behavior: "smooth"
         });
     }, [messages, isLoading]);
 
+    // Auto-hide empty message alert after 4 seconds
     useEffect(() => {
         if (!emptyMessageAlert) return;
 
@@ -59,14 +40,17 @@ export function Chat() {
         return () => window.clearTimeout(timer);
     }, [emptyMessageAlert]);
 
+    // Show warning when user tries to send an empty message
     function showEmptyMessageAlert() {
         setEmptyMessageAlert(true);
     }
 
+    // Send user message and get AI reply
     async function send(chatRequest: ChatRequestModel) {
 
         const message = chatRequest.message?.trim();
 
+        // Block empty or whitespace-only messages
         if (!message) {
             showEmptyMessageAlert();
             return;
@@ -77,13 +61,11 @@ export function Chat() {
         try {
 
             setIsLoading(true);
-
             chatRequest.conversation_id = conversationId;
 
+            // Add user message to the chat
             const userMessage = new MessageModel();
-
             userMessage.role = "user";
-
             userMessage.content = chatRequest.message;
 
             setMessages(prev => [
@@ -92,14 +74,13 @@ export function Chat() {
             ]);
 
             reset();
-            resetTextareaHeight();
 
+            // Call backend API
             const reply = await chatService.sendMessage(chatRequest);
 
+            // Add assistant reply to the chat
             const assistantMessage = new MessageModel();
-
             assistantMessage.role = "assistant";
-
             assistantMessage.content = reply;
 
             setMessages(prev => [
@@ -113,12 +94,14 @@ export function Chat() {
         finally {
             setIsLoading(false);
 
+            // Return focus to input after reply
             setTimeout(() => {
                 setFocus("message");
             }, 0);
         }
     }
 
+    // Clear chat and start a new conversation
     function newChat() {
 
         setMessages([]);
@@ -128,7 +111,6 @@ export function Chat() {
         );
 
         reset();
-        resetTextareaHeight();
 
         setTimeout(() => {
             setFocus("message");
@@ -163,6 +145,7 @@ export function Chat() {
 
                 <div className="messages">
 
+                    {/* Empty state */}
                     {messages.length === 0 && !isLoading && (
                         <div className="messages-empty">
                             <div className="messages-empty-icon">💬</div>
@@ -173,6 +156,7 @@ export function Chat() {
                         </div>
                     )}
 
+                    {/* Message list */}
                     {messages.map((message, index) => (
                         <div
                             key={index}
@@ -188,6 +172,7 @@ export function Chat() {
                         </div>
                     ))}
 
+                    {/* Loading indicator */}
                     {isLoading && (
                         <div className="typing">
                             <div className="typing-dots">
@@ -203,6 +188,7 @@ export function Chat() {
                 </div>
             </div>
 
+            {/* Empty message warning */}
             {emptyMessageAlert && (
                 <div className="chat-alert" role="alert">
                     <p>
@@ -227,12 +213,9 @@ export function Chat() {
                 <textarea
                     className="chat-input"
                     {...messageRegister}
-                    ref={(element) => {
-                        messageRegisterRef(element);
-                        messageInputRef.current = element;
-                    }}
-                    onInput={adjustTextareaHeight}
+                    ref={messageRegisterRef}
                     onKeyDown={(event) => {
+                        // Enter sends, Shift+Enter adds a new line
                         if (event.key === "Enter" && !event.shiftKey) {
                             event.preventDefault();
                             void handleSubmit(send)();

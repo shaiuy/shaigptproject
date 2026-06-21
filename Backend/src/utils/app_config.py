@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from os import getenv
 
+# Load environment variables from .env file
 load_dotenv()
 
 

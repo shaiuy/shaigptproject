@@ -8,6 +8,7 @@ BaseModel = declarative_base()
 
 class Dal:
 
+    # Create database session and tables
     def create_session(self):
 
         engine = create_engine(AppConfig.connection_string)

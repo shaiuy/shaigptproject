@@ -3,9 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from src.controllers.chat_controller import router as chat_router
 from src.middleware.logging import log_requests
 
+# Create FastAPI app
 app = FastAPI(title="ChatGPT Clone API")
 
-# CORS
+# Allow frontend requests from localhost
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
@@ -14,15 +15,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Logging middleware
+# Log every HTTP request
 app.middleware("http")(log_requests)
 
-# Routes
+# Register chat routes
 app.include_router(
     chat_router,
     prefix="/api/chat"
 )
 
+# Health check endpoint
 @app.get("/")
 def root():
     return {

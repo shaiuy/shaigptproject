@@ -3,15 +3,18 @@ from pydantic import BaseModel as BaseSchema, Field
 from src.utils.dal import BaseModel
 from uuid import UUID
 
+# Incoming chat request from frontend
 class ChatRequestSchema(BaseSchema):
     conversation_id: UUID
     message: str = Field(min_length=1, max_length=5000)
 
 
+# Outgoing chat response to frontend
 class ChatResponseSchema(BaseSchema):
     reply: str
 
 
+# Database table for chat messages
 class MessageModel(BaseModel):
 
     __tablename__ = "messages"
@@ -22,6 +25,7 @@ class MessageModel(BaseModel):
     created_at = Column(DateTime,server_default=func.now())
 
 
+# Database table for conversations
 class ConversationModel(BaseModel):
     __tablename__ = "conversations"
     id = Column(String(100),primary_key=True)

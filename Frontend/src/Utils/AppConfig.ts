@@ -1,3 +1,4 @@
+// Frontend environment configuration
 class AppConfig {
     public readonly isDevelopment = import.meta.env.DEV;
     public readonly isProduction = import.meta.env.PROD;
